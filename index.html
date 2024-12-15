@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rosas do Deserto - Flores Únicas e Especiais</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Rosas do Deserto</div>
+            <ul>
+                <li><a href="#inicio">Início</a></li>
+                <li><a href="#catalogo">Catálogo</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="inicio" class="hero">
+            <h1>Rosas do Deserto</h1>
+            <p>Descubra a beleza única das nossas flores</p>
+        </section>
+
+        <section id="catalogo" class="products">
+            <h2>Nosso Catálogo</h2>
+            <div class="product-grid">
+                <!-- Product cards will be added here -->
+            </div>
+            <button id="ar-view" class="ar-button">
+                Ver em Realidade Aumentada
+            </button>
+        </section>
+
+        <section id="sobre" class="about">
+            <h2>Sobre Nossas Rosas</h2>
+            <p>Cultivadas com amor e dedicação, nossas Rosas do Deserto são exemplares únicos que trazem beleza e harmonia para qualquer ambiente.</p>
+        </section>
+
+        <section id="contato" class="contact">
+            <h2>Entre em Contato</h2>
+            <form id="contact-form">
+                <input type="text" placeholder="Nome" required>
+                <input type="email" placeholder="E-mail" required>
+                <textarea placeholder="Mensagem" required></textarea>
+                <button type="submit">Enviar</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Rosas do Deserto. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
