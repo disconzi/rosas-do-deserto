@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
             category: 'Acessórios',
             arModels: [
                 {
-                    file: 'models/WaterTap (Modern).usdz',
+                    file: 'models/WaterTap-Modern.usdz',
                     label: 'Ver em AR'
                 }
             ]
