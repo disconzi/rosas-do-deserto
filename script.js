@@ -10,16 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
             category: 'Rosas do Deserto',
             arModels: [
                 {
-                    file: 'models/Triple_Wish.usdz',
-                    label: 'Versão Original'
-                },
-                {
-                    file: 'models/Triple_Wish2.usdz',
-                    label: 'Versão 2'
-                },
-                {
                     file: 'models/Triple_Wish_5metersperunit.usdz',
-                    label: '5m por Unidade'
+                    label: 'Visualizar em AR'
                 }
             ]
         },
