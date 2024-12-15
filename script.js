@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
             category: 'Rosas do Deserto',
             arModels: [
                 {
-                    file: 'models/Triple_Wish_5metersperunit.usdz',
+                    usdz: 'models/Triple_Wish_5metersperunit.usdz',
+                    glb: 'models/Triple_Wish_5metersperunit.glb', 
                     label: 'Visualizar em AR'
                 }
             ]
@@ -23,7 +24,8 @@ document.addEventListener('DOMContentLoaded', function() {
             category: 'Rosas do Deserto',
             arModels: [
                 {
-                    file: 'models/Rosa_2.usdz',
+                    usdz: 'models/Rosa_2.usdz',
+                    glb: 'models/Rosa_2.glb', 
                     label: 'Visualizar em AR'
                 }
             ]
@@ -37,7 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
             category: 'Móveis',
             arModels: [
                 {
-                    file: 'models/11645_Refrigerator_v1_L3.usdz',
+                    usdz: 'models/11645_Refrigerator_v1_L3.usdz',
+                    glb: 'models/11645_Refrigerator_v1_L3.glb', 
                     label: 'Ver em AR'
                 }
             ]
@@ -50,7 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
             category: 'Móveis',
             arModels: [
                 {
-                    file: 'models/California_King_Size_Bed_With_Thyme_Sheets_Pine_V1_NEW.usdz',
+                    usdz: 'models/California_King_Size_Bed_With_Thyme_Sheets_Pine_V1_NEW.usdz',
+                    glb: 'models/California_King_Size_Bed_With_Thyme_Sheets_Pine_V1_NEW.glb', 
                     label: 'Visualizar em AR'
                 }
             ]
@@ -63,7 +67,8 @@ document.addEventListener('DOMContentLoaded', function() {
             category: 'Móveis',
             arModels: [
                 {
-                    file: 'models/Full_Size_Bed_with_White_Sheets_Black_V1.usdz',
+                    usdz: 'models/Full_Size_Bed_with_White_Sheets_Black_V1.usdz',
+                    glb: 'models/Full_Size_Bed_with_White_Sheets_Black_V1.glb', 
                     label: 'Ver em AR'
                 }
             ]
@@ -76,7 +81,8 @@ document.addEventListener('DOMContentLoaded', function() {
             category: 'Móveis',
             arModels: [
                 {
-                    file: 'models/Wood_Table.usdz',
+                    usdz: 'models/Wood_Table.usdz',
+                    glb: 'models/Wood_Table.glb', 
                     label: 'Visualizar em AR'
                 }
             ]
@@ -90,7 +96,8 @@ document.addEventListener('DOMContentLoaded', function() {
             category: 'Acessórios',
             arModels: [
                 {
-                    file: 'models/WaterTap-Modern.usdz',
+                    usdz: 'models/WaterTap-Modern.usdz',
+                    glb: 'models/WaterTap-Modern.glb', 
                     label: 'Ver em AR'
                 }
             ]
@@ -112,7 +119,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const categoryGrid = document.createElement('div');
         categoryGrid.className = 'category-grid';
         
-        // Filter products by category
         const categoryProducts = products.filter(product => product.category === category);
         categoryProducts.forEach(product => {
             const productCard = createProductCard(product);
@@ -130,23 +136,38 @@ document.addEventListener('DOMContentLoaded', function() {
         // Check if it's iOS
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         
-        // Create AR buttons if the product has AR models
-        let arButtons = '';
-        if (product.arModels && isIOS) {
-            arButtons = `
-                <div class="ar-buttons-grid">
-                    ${product.arModels.map(model => `
-                        <a rel="ar" 
-                           href="${model.file}#custom=allowsContentScaling=1&applePayButtonType=plain&checkoutTitle=${encodeURIComponent(product.name)}&checkoutSubtitle=Visualize%20em%20AR"
-                           data-ar-scale="fixed"
-                           data-ar-fallback="no"
-                           data-ar-modes="quicklook scene"
-                           class="ar-link">
-                           <img src="images/ar-badge.png" alt="${model.label}" class="ar-badge">
-                           <span class="ar-label">${model.label}</span>
-                        </a>
-                    `).join('')}
-                </div>`;
+        // Create AR content based on device/browser
+        let arContent = '';
+        if (product.arModels) {
+            if (isIOS) {
+                // iOS devices: Use USDZ with AR Quick Look
+                arContent = product.arModels.map(model => `
+                    <a rel="ar" 
+                       href="${model.usdz}#custom=allowsContentScaling=1&applePayButtonType=plain&checkoutTitle=${encodeURIComponent(product.name)}&checkoutSubtitle=Visualize%20em%20AR"
+                       class="ar-link">
+                       <img src="images/ar-badge.png" alt="${model.label}" class="ar-badge">
+                       <span class="ar-label">${model.label}</span>
+                    </a>
+                `).join('');
+            } else {
+                // Other devices: Use Model-Viewer with GLB
+                arContent = product.arModels.map(model => `
+                    <model-viewer
+                        src="${model.glb}"
+                        ios-src="${model.usdz}"
+                        ar
+                        ar-modes="webxr scene-viewer quick-look"
+                        camera-controls
+                        shadow-intensity="1"
+                        auto-rotate
+                        camera-orbit="45deg 55deg 2.5m"
+                        class="ar-viewer">
+                        <button slot="ar-button" class="ar-button">
+                            ${model.label}
+                        </button>
+                    </model-viewer>
+                `).join('');
+            }
         }
 
         card.innerHTML = `
@@ -154,14 +175,9 @@ document.addEventListener('DOMContentLoaded', function() {
             <h3>${product.name}</h3>
             <p>${product.description}</p>
             <p class="price">${product.price}</p>
-            ${arButtons}
-            ${product.arModels ? `
-                <div class="external-ar-link">
-                    <a href="ar-view.html?product=${encodeURIComponent(product.name)}" target="_blank">
-                        Ver em AR (Link Externo) ↗
-                    </a>
-                </div>
-            ` : ''}
+            <div class="ar-container">
+                ${arContent}
+            </div>
         `;
         return card;
     }
