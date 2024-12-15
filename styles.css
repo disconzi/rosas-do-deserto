@@ -334,6 +334,25 @@ footer {
     color: var(--background-color);
 }
 
+.category-section {
+    margin-bottom: 2rem;
+}
+
+.category-section h2 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 0.5rem;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
 @media (max-width: 768px) {
     nav {
         flex-direction: column;

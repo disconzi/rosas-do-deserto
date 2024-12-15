@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Product data
     const products = [
+        // Rosas do Deserto Section
         {
             name: 'Rosa do Deserto Triple Wish',
             description: 'Magnífica Rosa do Deserto com pétalas triplas em tons suaves',
             price: 'R$ 180,00',
             image: 'images/rosa-6542.jpg',
+            category: 'Rosas do Deserto',
             arModels: [
                 {
                     file: 'models/Triple_Wish.usdz',
@@ -18,38 +20,115 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     file: 'models/Triple_Wish_5metersperunit.usdz',
                     label: '5m por Unidade'
-                },
-                {
-                    file: 'models/Triple_Wishmeter.usdz',
-                    label: 'Versão Metro'
                 }
             ]
         },
         {
-            name: 'Rosa do Deserto Rosa Delicada',
-            description: 'Linda Rosa do Deserto com tons rosados suaves',
+            name: 'Rosa do Deserto Rosa 2',
+            description: 'Linda Rosa do Deserto com características únicas',
             price: 'R$ 150,00',
-            image: 'images/rosa-6543.jpg'
+            image: 'images/rosa-6543.jpg',
+            category: 'Rosas do Deserto',
+            arModels: [
+                {
+                    file: 'models/Rosa_2.usdz',
+                    label: 'Visualizar em AR'
+                }
+            ]
+        },
+        // Móveis Section
+        {
+            name: 'Refrigerador Moderno',
+            description: 'Refrigerador espaçoso com design contemporâneo',
+            price: 'R$ 3.999,00',
+            image: 'images/rosa-6544.jpg',
+            category: 'Móveis',
+            arModels: [
+                {
+                    file: 'models/11645_Refrigerator_v1_L3.usdz',
+                    label: 'Ver em AR'
+                }
+            ]
         },
         {
-            name: 'Rosa do Deserto Amarela',
-            description: 'Elegante Rosa do Deserto em tons amarelados',
-            price: 'R$ 160,00',
-            image: 'images/rosa-6544.jpg'
+            name: 'Cama King Size California',
+            description: 'Cama King Size California com lençóis de tomilho',
+            price: 'R$ 4.500,00',
+            image: 'images/rosa-6545.jpg',
+            category: 'Móveis',
+            arModels: [
+                {
+                    file: 'models/California_King_Size_Bed_With_Thyme_Sheets_Pine_V1_NEW.usdz',
+                    label: 'Visualizar em AR'
+                }
+            ]
         },
         {
-            name: 'Rosa do Deserto Dupla',
-            description: 'Impressionante Rosa do Deserto com pétalas duplas',
-            price: 'R$ 170,00',
-            image: 'images/rosa-6545.jpg'
+            name: 'Cama Queen Size',
+            description: 'Cama Queen Size com lençóis brancos e acabamento em preto',
+            price: 'R$ 3.800,00',
+            image: 'images/rosa-6546.jpg',
+            category: 'Móveis',
+            arModels: [
+                {
+                    file: 'models/Full_Size_Bed_with_White_Sheets_Black_V1.usdz',
+                    label: 'Ver em AR'
+                }
+            ]
+        },
+        {
+            name: 'Mesa de Madeira',
+            description: 'Mesa de madeira com design clássico',
+            price: 'R$ 1.200,00',
+            image: 'images/rosa-6548.jpg',
+            category: 'Móveis',
+            arModels: [
+                {
+                    file: 'models/Wood_Table.usdz',
+                    label: 'Visualizar em AR'
+                }
+            ]
+        },
+        // Acessórios Section
+        {
+            name: 'Torneira Moderna',
+            description: 'Torneira com design moderno e acabamento premium',
+            price: 'R$ 450,00',
+            image: 'images/rosa-6549.jpg',
+            category: 'Acessórios',
+            arModels: [
+                {
+                    file: 'models/WaterTap (Modern).usdz',
+                    label: 'Ver em AR'
+                }
+            ]
         }
     ];
 
-    // Populate product grid
+    // Create category sections
+    const categories = [...new Set(products.map(product => product.category))];
     const productGrid = document.querySelector('.product-grid');
-    products.forEach(product => {
-        const productCard = createProductCard(product);
-        productGrid.appendChild(productCard);
+    
+    categories.forEach(category => {
+        const categorySection = document.createElement('div');
+        categorySection.className = 'category-section';
+        
+        const categoryTitle = document.createElement('h2');
+        categoryTitle.textContent = category;
+        categorySection.appendChild(categoryTitle);
+        
+        const categoryGrid = document.createElement('div');
+        categoryGrid.className = 'category-grid';
+        
+        // Filter products by category
+        const categoryProducts = products.filter(product => product.category === category);
+        categoryProducts.forEach(product => {
+            const productCard = createProductCard(product);
+            categoryGrid.appendChild(productCard);
+        });
+        
+        categorySection.appendChild(categoryGrid);
+        productGrid.appendChild(categorySection);
     });
 
     function createProductCard(product) {
@@ -66,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="ar-buttons-grid">
                     ${product.arModels.map(model => `
                         <a rel="ar" 
-                           href="${model.file}#custom=allowsContentScaling=1&applePayButtonType=plain&checkoutTitle=Rosa%20do%20Deserto&checkoutSubtitle=Visualize%20em%20AR"
+                           href="${model.file}#custom=allowsContentScaling=1&applePayButtonType=plain&checkoutTitle=${encodeURIComponent(product.name)}&checkoutSubtitle=Visualize%20em%20AR"
                            data-ar-scale="fixed"
                            data-ar-fallback="no"
                            data-ar-modes="quicklook scene"
@@ -86,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ${arButtons}
             ${product.arModels ? `
                 <div class="external-ar-link">
-                    <a href="ar-view.html" target="_blank">
+                    <a href="ar-view.html?product=${encodeURIComponent(product.name)}" target="_blank">
                         Ver em AR (Link Externo) ↗
                     </a>
                 </div>
